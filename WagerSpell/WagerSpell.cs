@@ -10,7 +10,7 @@ namespace WagerSpell;
 [BepInDependency("com.d1gq.black.magic.api", BepInDependency.DependencyFlags.HardDependency)]
 public class WagerSpell : BaseUnityPlugin
 {
-    public static string modsync = "host";
+    public static string modsync = "all";
 
     internal static new ManualLogSource Logger;
 
