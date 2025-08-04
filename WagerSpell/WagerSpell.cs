@@ -45,7 +45,7 @@ public class WagerSpell : BaseUnityPlugin
     /// <summary>
     /// Spawns an instance of this spell's page
     /// </summary>
-    public void SpawnPage()
+    private void SpawnPage()
     {
         if (!InstanceFinder.IsServerStarted)
         {
