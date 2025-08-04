@@ -42,4 +42,5 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
-TBA
+**0.1.0**
+* Implement basic version of spell
