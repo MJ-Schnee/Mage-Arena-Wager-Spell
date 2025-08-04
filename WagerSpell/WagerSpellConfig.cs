@@ -15,6 +15,8 @@ internal static class WagerSpellConfig
 
     internal static ConfigEntry<float> ChanceConfig { get; private set; }
 
+    internal static ConfigEntry<bool> TeamChestConfig { get; private set; }
+
     private static bool mageConfigApiExists;
 
     private static BaseUnityPlugin plugin;
@@ -54,6 +56,12 @@ internal static class WagerSpellConfig
             0.5f,
             "Chance that caster will be the target of the spell (0 - 1)",
             new AcceptableValueRange<float>(0f, 1f)
+        );
+
+        TeamChestConfig = BindConfig(
+            "Team Chest",
+            true,
+            "Whether the page can spawn in the team chest"
         );
     }
 

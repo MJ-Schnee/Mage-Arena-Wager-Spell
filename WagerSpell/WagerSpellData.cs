@@ -13,4 +13,10 @@ internal class WagerSpellData : SpellData
     public override float Cooldown => WagerSpellConfig.CooldownConfig.Value;
 
     public override Color GlowColor => new(2f, 1.886f, 1.427f); // Gold
+
+    public override bool CanSpawnInTeamChest => WagerSpellConfig.TeamChestConfig.Value;
+
+    #if DEBUG
+        public override bool DebugForceSpawn => true;
+    #endif
 }

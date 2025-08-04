@@ -12,6 +12,7 @@ Cast this spell and take a chance.
 * **Damage**: 1000 damage
 * **Cone of Vision**: 45°
 * **Chance**: 50% to target yourself
+* **Team Chest**: Can spawn in team chest
 
 ## Installation
 
@@ -38,6 +39,7 @@ The following settings can be adjusted:
 * Range
 * Damage
 * Chance
+* Team chest spawning
 
 ## Changelog
 TBA
