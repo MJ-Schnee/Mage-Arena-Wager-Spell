@@ -1,0 +1,11 @@
+{
+    "name": "Wager_Spell",
+    "version_number": "0.0.0",
+    "website_url": "https://github.com/MJ-Schnee/Mage-Arena-Wager-Spell",
+    "description": "A spell with a chance to hit yourself instead of your opponent.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+        "D1GQ-BlackMagicAPI-1.4.1",
+        "hiccup-ModSync-1.0.4"
+    ]
+}
