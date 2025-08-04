@@ -12,6 +12,7 @@ namespace WagerSpell;
 [BepInProcess("MageArena.exe")]
 [BepInDependency("com.magearena.modsync", BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency("com.d1gq.black.magic.api", BepInDependency.DependencyFlags.HardDependency)]
+[BepInDependency("com.d1gq.mage.configuration.api", BepInDependency.DependencyFlags.SoftDependency)]
 public class WagerSpell : BaseUnityPlugin
 {
     public static string modsync = "all";
