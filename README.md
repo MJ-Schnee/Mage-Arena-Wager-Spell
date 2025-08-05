@@ -57,3 +57,7 @@ The following settings can be adjusted:
 
 **0.1.0**
 * Implement basic version of spell
+
+## Credits
+* **Explode sound effect**: "Explosion 1.ogg" by filipex2000 - https://freesound.org/s/426439/
+* **Jackpot sound effect**: "Playing and winning Slot Machine Jackpot - Sound Effect for editing" by SoundLibrary1 https://www.youtube.com/watch?v=qPwANcErhDU
