@@ -26,8 +26,12 @@ Cast this spell and take a chance.
    MageArena/
    └── BepInEx/
        └── plugins/
-           └── WagerSpell
+           └── WagerSpell/
 			   └── WagerSpell.dll
+			   └── Sprites/
+			       └── Wager_Main.png
+			       └── Wager_Emission.png
+			       └── Wager_Ui.png
    ```
 ## Configuration
 Edit `BepInEx/config/com.YeahThatsMJ.WagerSpell.cfg` to adjust settings.
@@ -42,5 +46,8 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.2.0**
+* Add sprites
+
 **0.1.0**
 * Implement basic version of spell
