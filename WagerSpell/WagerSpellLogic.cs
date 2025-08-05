@@ -88,7 +88,7 @@ internal class WagerSpellLogic : SpellLogic
             }
             else
             {
-                // TODO: Laser beam effect
+                CreateWagerLaser(casterGO, targetMovementComp.gameObject);
             }
 
             targetMovementComp.DamagePlayer(Damage, casterGO, "Wager");
@@ -132,10 +132,19 @@ internal class WagerSpellLogic : SpellLogic
 
     private void CreateWagerExplosion(GameObject caster)
     {
-        Vector3 pos = caster.transform.position;
+        Vector3 casterPos = caster.transform.position;
 
         // TODO: Explosion visuals
 
-        SoundUtils.PlaySpatialSoundAtPosition(pos, WagerSpell.ExplodeSound);
+        SoundUtils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.ExplodeSound);
+    }
+
+    private void CreateWagerLaser(GameObject caster, GameObject target)
+    {
+        Vector3 casterPos = caster.transform.position;
+
+        // TODO: Laser visuals
+
+        SoundUtils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.JackpotSound);
     }
 }

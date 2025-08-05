@@ -46,6 +46,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.4.0**
+* Add jackpot sound effect
+
 **0.3.0**
 * Add explosion sound effect
 

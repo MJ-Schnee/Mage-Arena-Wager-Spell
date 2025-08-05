@@ -21,6 +21,8 @@ public class WagerSpell : BaseUnityPlugin
 
     public static AudioClip ExplodeSound;
 
+    public static AudioClip JackpotSound;
+
     internal static new ManualLogSource Logger;
 
     private void Awake()
@@ -34,6 +36,8 @@ public class WagerSpell : BaseUnityPlugin
         WagerSpellConfig.LoadConfig(this);
 
         ExplodeSound = SoundUtils.LoadSound("Explode.wav", AudioType.WAV, Logger);
+
+        JackpotSound = SoundUtils.LoadSound("Jackpot.wav", AudioType.WAV, Logger);
 
         SpellManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
 
