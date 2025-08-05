@@ -22,6 +22,8 @@ Cast this spell and take a chance.
    - BlackMagicAPI
 
 2. **Installation**:
+- After downloading the mod, place the files in the following locations:
+
    ```
    MageArena/
    └── BepInEx/
@@ -32,6 +34,9 @@ Cast this spell and take a chance.
 			       └── Wager_Main.png
 			       └── Wager_Emission.png
 			       └── Wager_Ui.png
+			   └── Sounds/
+			       └── Explode.wav
+			       └── Jackpot.wav
    ```
 ## Configuration
 Edit `BepInEx/config/com.YeahThatsMJ.WagerSpell.cfg` to adjust settings.
