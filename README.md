@@ -46,6 +46,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.3.0**
+* Add explosion sound effect
+
 **0.2.0**
 * Add sprites
 

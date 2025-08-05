@@ -84,14 +84,14 @@ internal class WagerSpellLogic : SpellLogic
 
             if (targetMovementComp == casterMovementComp)
             {
-                // TODO: Explosion effect
+                CreateWagerExplosion(casterGO);
             }
             else
             {
                 // TODO: Laser beam effect
             }
 
-                targetMovementComp.DamagePlayer(Damage, casterGO, "Wager");
+            targetMovementComp.DamagePlayer(Damage, casterGO, "Wager");
         }
         else
         {
@@ -128,5 +128,14 @@ internal class WagerSpellLogic : SpellLogic
         }
 
         return false;
+    }
+
+    private void CreateWagerExplosion(GameObject caster)
+    {
+        Vector3 pos = caster.transform.position;
+
+        // TODO: Explosion visuals
+
+        SoundUtils.PlaySpatialSoundAtPosition(pos, WagerSpell.ExplodeSound);
     }
 }

@@ -15,17 +15,25 @@ namespace WagerSpell;
 [BepInDependency("com.d1gq.mage.configuration.api", BepInDependency.DependencyFlags.SoftDependency)]
 public class WagerSpell : BaseUnityPlugin
 {
+    public static WagerSpell Instance { get; private set; }
+
     public static string modsync = "all";
+
+    public static AudioClip ExplodeSound;
 
     internal static new ManualLogSource Logger;
 
     private void Awake()
     {
+        Instance = this;
+
         Logger = base.Logger;
 
         Logger.LogInfo($"Initializing {PluginInfo.PLUGIN_GUID}...");
 
         WagerSpellConfig.LoadConfig(this);
+
+        ExplodeSound = SoundUtils.LoadSound("Explode.wav", AudioType.WAV, Logger);
 
         SpellManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
 
