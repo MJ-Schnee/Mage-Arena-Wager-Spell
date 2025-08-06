@@ -13,6 +13,8 @@ Cast this spell and take a chance.
 * **Cone of Vision**: 45°
 * **Chance**: 50% to target yourself
 * **Team Chest**: Can spawn in team chest
+* **Visuals**: Small explosion on effected player
+* **Sound**: Small explosion on effected player and jackpot when spell doesn't backfire
 
 ## Installation
 
@@ -37,6 +39,8 @@ Cast this spell and take a chance.
 			   └── Sounds/
 			       └── Explode.wav
 			       └── Jackpot.wav
+			   └── AssetBundles/
+			       └── explosion_prefab
    ```
 ## Configuration
 Edit `BepInEx/config/com.YeahThatsMJ.WagerSpell.cfg` to adjust settings.
@@ -51,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.6.0**
+* Explosion and jackpot sound when spell hits another player
+
 **0.5.0**
 * Add explosion visual effect
 

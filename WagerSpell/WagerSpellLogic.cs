@@ -15,7 +15,7 @@ internal class WagerSpellLogic : SpellLogic
     private static readonly float MaxAngle = 45f;
 
     public override void CastSpell(GameObject casterGO, Vector3 spawnPos, Vector3 viewDirectionVector, int castingLevel)
-    {
+    { 
         float rand = Random.Range(0f, 1f);
 
         PlayerMovement casterMovementComp = casterGO.GetComponent<PlayerMovement>();
@@ -82,15 +82,26 @@ internal class WagerSpellLogic : SpellLogic
         {
             WagerSpell.Logger.LogInfo($"{casterMovementComp.playername} wagered with score {rand}/{SelfHitChance} and is targeting {targetMovementComp.playername}!");
 
+            Vector3 explosionPos;
+
             if (targetMovementComp == casterMovementComp)
             {
-                Vector3 explosionPos = casterGO.transform.position + Vector3.up * 1.75f;
-                CreateWagerExplosion(explosionPos);
+                explosionPos = casterGO.transform.position + Vector3.up * 1.75f;
             }
             else
             {
-                CreateWagerLaser(casterGO, targetMovementComp.gameObject);
+                explosionPos = targetMovementComp.gameObject.transform.position + Vector3.up * 1.75f;
+
+                // Jackpot sound on enemy hit
+                Vector3 jackpotPos = casterGO.transform.position + Vector3.up * 1.75f;
+                Utils.PlaySpatialSoundAtPosition(jackpotPos, WagerSpell.JackpotSound);
             }
+
+            GameObject explosionGO = Instantiate(WagerSpell.ExplosionPrefab, explosionPos, Quaternion.identity);
+            float effectDuration = WagerSpell.ExplosionPrefab.GetComponent<ParticleSystem>().main.duration + 0.25f;
+            Destroy(explosionGO, effectDuration);
+            
+            Utils.PlaySpatialSoundAtPosition(explosionPos, WagerSpell.ExplodeSound);
 
             targetMovementComp.DamagePlayer(Damage, casterGO, "Wager");
         }
@@ -98,29 +109,5 @@ internal class WagerSpellLogic : SpellLogic
         {
             WagerSpell.Logger.LogInfo($"{casterMovementComp.playername} wagered with score {rand}/{SelfHitChance} but found no valid targets!");
         }
-    }
-
-    /// <summary>
-    /// Creates a visual explosion effect with sound
-    /// </summary>
-    /// <param name="position">World position where visuals and sound will occur</param>
-    private void CreateWagerExplosion(Vector3 position)
-    {
-        GameObject explosionGO = Instantiate(WagerSpell.ExplosionPrefab, position, Quaternion.identity);
-
-        float effectDuration = WagerSpell.ExplosionPrefab.GetComponent<ParticleSystem>().main.duration + 0.25f;
-
-        Destroy(explosionGO, effectDuration);
-
-        Utils.PlaySpatialSoundAtPosition(position, WagerSpell.ExplodeSound);
-    }
-
-    private void CreateWagerLaser(GameObject caster, GameObject target)
-    {
-        Vector3 casterPos = caster.transform.position;
-
-        // TODO: Laser visuals
-
-        Utils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.JackpotSound);
     }
 }
