@@ -17,13 +17,15 @@ public class WagerSpell : BaseUnityPlugin
 {
     public static WagerSpell Instance { get; private set; }
 
-    public static string modsync = "all";
+    public static readonly string modsync = "all";
 
-    public static AudioClip ExplodeSound;
+    internal static AudioClip ExplodeSound { get; private set; }
 
-    public static AudioClip JackpotSound;
+    internal static AudioClip JackpotSound { get; private set; }
 
-    internal static new ManualLogSource Logger;
+    internal static GameObject ExplosionPrefab { get; private set; }
+
+    internal static new ManualLogSource Logger { get; private set; }
 
     private void Awake()
     {
@@ -35,9 +37,9 @@ public class WagerSpell : BaseUnityPlugin
 
         WagerSpellConfig.LoadConfig(this);
 
-        ExplodeSound = SoundUtils.LoadSound("Explode.wav", AudioType.WAV, Logger);
+        LoadSounds();
 
-        JackpotSound = SoundUtils.LoadSound("Jackpot.wav", AudioType.WAV, Logger);
+        LoadPrefabs();
 
         SpellManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
 
@@ -105,5 +107,25 @@ public class WagerSpell : BaseUnityPlugin
 
             Logger.LogMessage($"[SERVER] Spawned page '{prefab.name}' for player '{player.name}' at {spawnPos}");
         }
+    }
+
+    /// <summary>
+    /// Loads in all sounds necessary for the spell
+    /// </summary>
+    private void LoadSounds()
+    {
+        ExplodeSound = Utils.LoadSound("Explode.wav", AudioType.WAV);
+
+        JackpotSound = Utils.LoadSound("Jackpot.wav", AudioType.WAV);
+    }
+
+    /// <summary>
+    /// Loads in all prefabs necessary for the spell
+    /// </summary>
+    private void LoadPrefabs()
+    {
+        var explosionPrefabAssetBundle = Utils.LoadAssetBundle("explosion_prefab");
+        ExplosionPrefab = explosionPrefabAssetBundle.LoadAsset<GameObject>("vfx_Impact_01");
+        explosionPrefabAssetBundle.UnloadAsync(false);
     }
 }

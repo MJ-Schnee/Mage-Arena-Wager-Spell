@@ -61,7 +61,7 @@ internal class WagerSpellLogic : SpellLogic
                 if (angle > MaxAngle)
                     continue;
 
-                if (!HasLineOfSight(casterPos, targetGO.transform.position))
+                if (!Utils.HasLineOfSight(casterPos, targetGO.transform.position))
                     continue;
 
                 float score = angle * 2f + dist;
@@ -84,7 +84,8 @@ internal class WagerSpellLogic : SpellLogic
 
             if (targetMovementComp == casterMovementComp)
             {
-                CreateWagerExplosion(casterGO);
+                Vector3 explosionPos = casterGO.transform.position + Vector3.up * 1.75f;
+                CreateWagerExplosion(explosionPos);
             }
             else
             {
@@ -100,43 +101,18 @@ internal class WagerSpellLogic : SpellLogic
     }
 
     /// <summary>
-    /// Determines if there is a clear line of sight between two positions using multiple raycasts
-    /// with slight horizontal offsets to simulate a wider "vision cone".
+    /// Creates a visual explosion effect with sound
     /// </summary>
-    /// <param name="origin">The world position of viewer.</param>
-    /// <param name="target">The world position of target.</param>
-    /// <returns>True if at least one of the raycasts from origin to target is unobstructed; otherwise, false.</returns>
-    private bool HasLineOfSight(Vector3 origin, Vector3 target)
+    /// <param name="position">World position where visuals and sound will occur</param>
+    private void CreateWagerExplosion(Vector3 position)
     {
-        Vector3 eyeOrigin = origin + Vector3.up * 1.5f;
-        Vector3 eyeTarget = target + Vector3.up * 1.5f;
-        Vector3 dir = (eyeTarget - eyeOrigin).normalized;
-        float distance = Vector3.Distance(eyeOrigin, eyeTarget);
-        
-        // Ignore player layer
-        int mask = ~(1 << LayerMask.NameToLayer("Player"));
+        GameObject explosionGO = Instantiate(WagerSpell.ExplosionPrefab, position, Quaternion.identity);
 
-        float[] angleOffsets = [-5f, 0f, 5f];
-        foreach (float offset in angleOffsets)
-        {
-            Vector3 offsetDir = Quaternion.Euler(0f, offset, 0f) * dir;
-            if (!Physics.Raycast(eyeOrigin, offsetDir, distance, mask))
-            {
-                // At least one clear ray
-                return true;
-            }
-        }
+        float effectDuration = WagerSpell.ExplosionPrefab.GetComponent<ParticleSystem>().main.duration + 0.25f;
 
-        return false;
-    }
+        Destroy(explosionGO, effectDuration);
 
-    private void CreateWagerExplosion(GameObject caster)
-    {
-        Vector3 casterPos = caster.transform.position;
-
-        // TODO: Explosion visuals
-
-        SoundUtils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.ExplodeSound);
+        Utils.PlaySpatialSoundAtPosition(position, WagerSpell.ExplodeSound);
     }
 
     private void CreateWagerLaser(GameObject caster, GameObject target)
@@ -145,6 +121,6 @@ internal class WagerSpellLogic : SpellLogic
 
         // TODO: Laser visuals
 
-        SoundUtils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.JackpotSound);
+        Utils.PlaySpatialSoundAtPosition(casterPos, WagerSpell.JackpotSound);
     }
 }

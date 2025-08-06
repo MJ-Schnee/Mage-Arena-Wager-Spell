@@ -51,6 +51,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.5.0**
+* Add explosion visual effect
+
 **0.4.0**
 * Add jackpot sound effect
 
@@ -66,3 +69,4 @@ The following settings can be adjusted:
 ## Credits
 * **Explode sound effect**: "Explosion 1.ogg" by filipex2000 - https://freesound.org/s/426439/
 * **Jackpot sound effect**: "Playing and winning Slot Machine Jackpot - Sound Effect for editing" by SoundLibrary1 https://www.youtube.com/watch?v=qPwANcErhDU
+* **Explode visual effect**: "Free Quick Effects Vol. 1" - Gabriel Aguiar Prod https://assetstore.unity.com/packages/vfx/particles/free-quick-effects-vol-1-304424
