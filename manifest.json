@@ -5,7 +5,7 @@
     "description": "A spell with a chance to hit yourself instead of your opponent.",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100",
-        "D1GQ-BlackMagicAPI-1.5.0",
-        "hiccup-ModSync-1.0.4"
+        "D1GQ-BlackMagicAPI-2.0.0",
+        "hiccup-ModSync-1.0.5"
     ]
 }

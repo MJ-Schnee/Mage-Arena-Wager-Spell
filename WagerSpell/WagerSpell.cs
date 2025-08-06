@@ -41,7 +41,7 @@ public class WagerSpell : BaseUnityPlugin
 
         LoadPrefabs();
 
-        SpellManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
+        BlackMagicManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
 
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
