@@ -101,6 +101,11 @@ namespace WagerSpell
            Object.Destroy(soundObj, clip.length + 0.1f);
         }
 
+        /// <summary>
+        /// Loads specified asset bundle
+        /// </summary>
+        /// <param name="assetBundleName">Name of asset bundle file</param>
+        /// <returns>Loaded asset bundle</returns>
         public static AssetBundle LoadAssetBundle(string assetBundleName)
         {
             WagerSpell.Logger.LogInfo($"Loading asset bundle file: {assetBundleName}");
