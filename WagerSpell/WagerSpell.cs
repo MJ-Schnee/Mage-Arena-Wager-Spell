@@ -6,6 +6,7 @@ using FishNet.Object;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace WagerSpell;
 
@@ -94,9 +95,8 @@ public class WagerSpell : BaseUnityPlugin
             return;
         }
 
-        var players = GameObject.FindGameObjectsWithTag("Player")
-                        .Where(player => player.name.Contains("Player"))
-                        .ToList();
+        List<GameObject> players =
+            [.. GameObject.FindGameObjectsWithTag("Player").Where(player => player.name.Contains("Player")) ];
         if (players.Count == 0)
         {
             Logger.LogError("No players found.");

@@ -12,7 +12,7 @@ internal class WagerSpellLogic : SpellLogic
 
     private static float Range => WagerSpellConfig.RangeConfig.Value;
 
-    private static readonly float MaxAngle = 45f;
+    private static readonly float maxAngle = 45f;
 
     public override void CastSpell(GameObject casterGO, Vector3 spawnPos, Vector3 viewDirectionVector, int castingLevel)
     { 
@@ -58,13 +58,13 @@ internal class WagerSpellLogic : SpellLogic
                     continue;
 
                 float angle = Vector3.Angle(forward, toTarget.normalized);
-                if (angle > MaxAngle)
+                if (angle > maxAngle)
                     continue;
 
                 if (!Utils.HasLineOfSight(casterPos, targetGO.transform.position))
                     continue;
 
-                float score = angle * 2f + dist;
+                float score = (angle * 2f) + dist;
                 if (score < bestScore)
                 {
                     bestScore = score;
@@ -86,14 +86,14 @@ internal class WagerSpellLogic : SpellLogic
 
             if (targetMovementComp == casterMovementComp)
             {
-                explosionPos = casterGO.transform.position + Vector3.up * 1.75f;
+                explosionPos = casterGO.transform.position + (Vector3.up * 1.75f);
             }
             else
             {
-                explosionPos = targetMovementComp.gameObject.transform.position + Vector3.up * 1.75f;
+                explosionPos = targetMovementComp.gameObject.transform.position + (Vector3.up * 1.75f);
 
                 // Jackpot sound on enemy hit
-                Vector3 jackpotPos = casterGO.transform.position + Vector3.up * 1.75f;
+                Vector3 jackpotPos = casterGO.transform.position + (Vector3.up * 1.75f);
                 Utils.PlaySpatialSoundAtPosition(jackpotPos, WagerSpell.JackpotSound);
             }
 
