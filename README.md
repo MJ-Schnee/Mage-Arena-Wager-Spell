@@ -55,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.7.0**
+* Add death icon
+
 **0.6.1**
 * Utilize BlackMagicAPI for Asset Bundle loading
 
