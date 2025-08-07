@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using BlackMagicAPI.Managers;
 using FishNet;
 using FishNet.Object;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -37,9 +38,7 @@ public class WagerSpell : BaseUnityPlugin
 
         WagerSpellConfig.LoadConfig(this);
 
-        LoadSounds();
-
-        LoadPrefabs();
+        LoadAssets();
 
         BlackMagicManager.RegisterSpell(this, typeof(WagerSpellData), typeof(WagerSpellLogic));
 
@@ -110,25 +109,25 @@ public class WagerSpell : BaseUnityPlugin
     }
 
     /// <summary>
-    /// Loads in all sounds necessary for the spell
+    /// Loads in all assets for the spell
     /// </summary>
-    private void LoadSounds()
+    private void LoadAssets()
     {
+        Logger.LogInfo("Loading sounds");
+
         ExplodeSound = Utils.LoadSound("Explode.wav", AudioType.WAV);
 
         JackpotSound = Utils.LoadSound("Jackpot.wav", AudioType.WAV);
-    }
 
-    /// <summary>
-    /// Loads in all prefabs necessary for the spell
-    /// </summary>
-    private void LoadPrefabs()
-    {
-        string explosionPrefabAssetBundlePath = Path.Combine(Utils.PluginDir, "AssetBundles", "explosion_prefab");
-        AssetBundle explosionPrefabAssetBundle = BlackMagicAPI.Helpers.Utils.LoadAssetBundleFromDisk(explosionPrefabAssetBundlePath);
+        Logger.LogInfo("Loading assets from bundle");
+
+        string wagerAssetPath = Path.Combine(Utils.PluginDir, "AssetBundles", "explosion_prefab");
+        AssetBundle wagerAssets = BlackMagicAPI.Helpers.Utils.LoadAssetBundleFromDisk(wagerAssetPath);
+
         string explosionPrefabAssetLocation = "assets/gabrielaguiarproductions/freequickeffectsvol1/prefabs/vfx_impact_01.prefab";
-        ExplosionPrefab = explosionPrefabAssetBundle.LoadAsset<GameObject>(explosionPrefabAssetLocation);
+        ExplosionPrefab = wagerAssets.LoadAsset<GameObject>(explosionPrefabAssetLocation);
         DontDestroyOnLoad(ExplosionPrefab);
-        explosionPrefabAssetBundle.UnloadAsync(false);
+
+        wagerAssets.UnloadAsync(false);
     }
 }
