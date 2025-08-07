@@ -14,7 +14,7 @@ internal class WagerSpellLogic : SpellLogic
 
     private static readonly float maxAngle = 45f;
 
-    public override void CastSpell(GameObject casterGO, Vector3 spawnPos, Vector3 viewDirectionVector, int castingLevel)
+    public override void CastSpell(GameObject casterGO, PageController page, Vector3 spawnPos, Vector3 viewDirectionVector, int castingLevel)
     { 
         float rand = Random.Range(0f, 1f);
 

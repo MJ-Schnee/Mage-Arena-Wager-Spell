@@ -34,7 +34,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mage Arena\MageArena_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BlackMagicAPI">
-      <HintPath>..\..\..\..\AppData\Roaming\com.kesomannen.gale\mage-arena\profiles\Dev\BepInEx\plugins\D1GQ-BlackMagicAPI\BlackMagicAPI.dll</HintPath>
+      <HintPath>..\..\..\..\AppData\Roaming\com.kesomannen.gale\mage-arena\profiles\Dev\BepInEx\plugins\D1GQ-BlackMagicAPI\BlackMagicAPI\BlackMagicAPI.dll</HintPath>
     </Reference>
     <Reference Include="FishNet.Runtime">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mage Arena\MageArena_Data\Managed\FishNet.Runtime.dll</HintPath>
