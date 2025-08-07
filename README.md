@@ -55,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**0.6.1**
+* Utilize BlackMagicAPI for Asset Bundle loading
+
 **0.6.0**
 * Explosion and jackpot sound when spell hits another player
 

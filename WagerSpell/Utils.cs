@@ -100,35 +100,5 @@ namespace WagerSpell
 
            Object.Destroy(soundObj, clip.length + 0.1f);
         }
-
-        /// <summary>
-        /// Loads specified asset bundle
-        /// </summary>
-        /// <param name="assetBundleName">Name of asset bundle file</param>
-        /// <returns>Loaded asset bundle</returns>
-        public static AssetBundle LoadAssetBundle(string assetBundleName)
-        {
-            WagerSpell.Logger.LogInfo($"Loading asset bundle file: {assetBundleName}");
-
-            string assetBundlePath = Path.Combine(PluginDir, "AssetBundles", assetBundleName);
-
-            if (!File.Exists(assetBundlePath))
-            {
-                WagerSpell.Logger.LogError($"Could not find asset bundle: {assetBundlePath}");
-                return null;
-            }
-
-            AssetBundle loadedBundle = AssetBundle.LoadFromFile(assetBundlePath);
-            if (loadedBundle == null)
-            {
-                WagerSpell.Logger.LogError($"Failed to load asset bundle: {assetBundlePath}");
-            }
-            else
-            {
-                WagerSpell.Logger.LogInfo($"Sucessfully loaded {assetBundleName}");
-            }
-
-            return loadedBundle;
-        }
     }
 }

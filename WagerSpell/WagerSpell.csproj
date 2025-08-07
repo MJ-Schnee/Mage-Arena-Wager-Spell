@@ -4,7 +4,7 @@
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>WagerSpell</AssemblyName>
     <Product>Spell with a 50/50 chance to hit you instead of your target</Product>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>

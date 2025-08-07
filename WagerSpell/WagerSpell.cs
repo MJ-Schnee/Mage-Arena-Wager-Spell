@@ -124,8 +124,11 @@ public class WagerSpell : BaseUnityPlugin
     /// </summary>
     private void LoadPrefabs()
     {
-        var explosionPrefabAssetBundle = Utils.LoadAssetBundle("explosion_prefab");
-        ExplosionPrefab = explosionPrefabAssetBundle.LoadAsset<GameObject>("vfx_Impact_01");
+        string explosionPrefabAssetBundlePath = Path.Combine(Utils.PluginDir, "AssetBundles", "explosion_prefab");
+        AssetBundle explosionPrefabAssetBundle = BlackMagicAPI.Helpers.Utils.LoadAssetBundleFromDisk(explosionPrefabAssetBundlePath);
+        string explosionPrefabAssetLocation = "assets/gabrielaguiarproductions/freequickeffectsvol1/prefabs/vfx_impact_01.prefab";
+        ExplosionPrefab = explosionPrefabAssetBundle.LoadAsset<GameObject>(explosionPrefabAssetLocation);
+        DontDestroyOnLoad(ExplosionPrefab);
         explosionPrefabAssetBundle.UnloadAsync(false);
     }
 }
