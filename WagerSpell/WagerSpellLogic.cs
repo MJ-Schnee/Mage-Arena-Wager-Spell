@@ -1,4 +1,5 @@
 ﻿using BlackMagicAPI.Modules.Spells;
+using BlackMagicAPI.Network;
 using FishNet.Object;
 using UnityEngine;
 
@@ -7,107 +8,192 @@ namespace WagerSpell;
 internal class WagerSpellLogic : SpellLogic
 {
     private static float SelfHitChance => WagerSpellConfig.ChanceConfig.Value;
-    
+
     private static float Damage => WagerSpellConfig.DamageConfig.Value;
 
     private static float Range => WagerSpellConfig.RangeConfig.Value;
 
-    private static readonly float maxAngle = 45f;
+    private const float MaxAngle = 45f;
 
-    public override void CastSpell(GameObject casterGO, PageController page, Vector3 spawnPos, Vector3 viewDirectionVector, int castingLevel)
-    { 
-        float rand = Random.Range(0f, 1f);
+    private int _casterNetworkId;
 
-        PlayerMovement casterMovementComp = casterGO.GetComponent<PlayerMovement>();
-        if (casterMovementComp == null)
+    private int _targetNetworkId;
+
+    /// <summary>
+    /// Client generates random number for cast and stores caster/target network ids
+    /// </summary>
+    public override void WriteData(DataWriter dataWriter,
+        PageController page,
+        GameObject caster,
+        Vector3 spawnPos,
+        Vector3 viewDirectionVector,
+        int spellLevel)
+    {
+        var casterNetObj = caster.GetComponent<NetworkObject>();
+        if (casterNetObj is null)
+        {
+            WagerSpell.Logger.LogError("Spell network object couldn't be found!");
+            return;
+        }
+        
+        var casterNetId = casterNetObj.ObjectId;
+        var targetNetId = -1;
+        var rand = Random.Range(0f, 1f);
+        
+        var casterMovementComp = caster.GetComponent<PlayerMovement>();
+        if (casterMovementComp is null)
         {
             WagerSpell.Logger.LogError("Caster's PlayerMovement could not be found!");
+            return;
         }
-
-        PlayerMovement targetMovementComp = null;
 
         if (rand > SelfHitChance)
         {
-            // Get unique network id of caster
-            NetworkObject casterNetObj = casterMovementComp.GetComponent<NetworkObject>();
-            if (casterNetObj == null)
-                return;
-            int casterId = casterNetObj.ObjectId;
+            var casterPos = caster.transform.position;
+            var forward = caster.transform.forward;
 
-            Vector3 casterPos = casterGO.transform.position;
-            Vector3 forward = casterGO.transform.forward;
+            var bestScore = float.MaxValue;
 
-            GameObject bestTarget;
-            PlayerMovement bestMovement;
-            float bestScore = float.MaxValue;
-
-            foreach (GameObject targetGO in GameObject.FindGameObjectsWithTag("Player"))
+            foreach (var target in GameObject.FindGameObjectsWithTag("Player"))
             {
                 // Skip self
-                NetworkObject targetNetObj = targetGO.GetComponent<NetworkObject>();
-                if (targetNetObj == null || targetNetObj.ObjectId == casterId)
+                var targetNetObj = target.GetComponent<NetworkObject>();
+                if (targetNetObj is null || targetNetObj.ObjectId == casterNetId)
                     continue;
 
-                targetMovementComp = targetGO.GetComponent<PlayerMovement>();
-                if (targetMovementComp == null)
+                var tempTargetMovement = target.GetComponent<PlayerMovement>();
+                if (tempTargetMovement is null)
                     continue;
 
-                Vector3 toTarget = targetGO.transform.position - casterPos;
-                float dist = toTarget.magnitude;
+                var toTarget = target.transform.position - casterPos;
+                var dist = toTarget.magnitude;
                 if (dist > Range)
                     continue;
 
-                float angle = Vector3.Angle(forward, toTarget.normalized);
-                if (angle > maxAngle)
+                var angle = Vector3.Angle(forward, toTarget.normalized);
+                if (angle > MaxAngle)
                     continue;
 
-                if (!Utils.HasLineOfSight(casterPos, targetGO.transform.position))
+                if (!Utils.HasLineOfSight(casterPos, target.transform.position))
                     continue;
 
-                float score = (angle * 2f) + dist;
-                if (score < bestScore)
-                {
-                    bestScore = score;
-                    bestTarget = targetGO;
-                    bestMovement = targetMovementComp;
-                }
+                var score = angle * 2f + dist;
+                if (!(score < bestScore))
+                    continue;
+                
+                bestScore = score;
+                targetNetId = targetNetObj.ObjectId;
             }
         }
         else
         {
-            targetMovementComp = casterMovementComp;
+            targetNetId = casterNetObj.ObjectId;
         }
 
-        if (targetMovementComp != null)
+        dataWriter.Write(casterNetId);
+        dataWriter.Write(targetNetId);
+    }
+    
+    /// <summary>
+    /// Stores the caster and target's network ids for spell casting
+    /// </summary>
+    /// <param name="values">Should be int[]: [casterNetworkId, targetNetworkId]</param>
+    public override void SyncData(object[] values)
+    {
+        if (values.Length != 2 || (values[0].GetType() != typeof(int) && values[1].GetType() != typeof(int)))
         {
-            WagerSpell.Logger.LogInfo($"{casterMovementComp.playername} wagered with score {rand}/{SelfHitChance} and is targeting {targetMovementComp.playername}!");
+            WagerSpell.Logger.LogError("SyncData values does not contain 2 int entries!");
+            return;
+        }
+        
+        _casterNetworkId = (int)values[0];
+        _targetNetworkId = (int)values[1];
+    }
+
+    public override void CastSpell(GameObject caster,
+        PageController page,
+        Vector3 spawnPos,
+        Vector3 viewDirection,
+        int castingLevel)
+    {
+        PlayerMovement casterMovementComp = null;
+        PlayerMovement targetMovementComp = null;
+        
+        // Search for PlayerMovement components
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            var playerNetObj = player.GetComponent<NetworkObject>();
+            if (playerNetObj is null)
+                continue;
+
+            if (playerNetObj.ObjectId == _casterNetworkId)
+            {
+                var playerMovementComp = player.GetComponent<PlayerMovement>();
+                if (playerMovementComp is null)
+                {
+                    WagerSpell.Logger.LogError("Caster's PlayerMovement could not be found!");
+                    return;   
+                }
+                
+                casterMovementComp = playerMovementComp;
+            }
+
+            if (playerNetObj.ObjectId == _targetNetworkId)
+            {
+                var playerMovementComp = player.GetComponent<PlayerMovement>();
+                if (playerMovementComp is null)
+                {
+                    WagerSpell.Logger.LogError("Caster's PlayerMovement could not be found!");
+                    return;   
+                }
+                
+                targetMovementComp = playerMovementComp;
+            }
+        }
+
+        if (casterMovementComp is null)
+        {
+            WagerSpell.Logger.LogError("Caster's PlayerMovement could not be found!");
+            return;
+        }
+
+        if (_targetNetworkId != 0)
+        {
+            if (targetMovementComp is null)
+            {
+                WagerSpell.Logger.LogError("Targets's PlayerMovement could not be found!");
+                return;
+            }
+            
+            WagerSpell.Logger.LogInfo(
+                $"{casterMovementComp.playername} wagered and is targeting {targetMovementComp.playername}!");
 
             Vector3 explosionPos;
 
             if (targetMovementComp == casterMovementComp)
             {
-                explosionPos = casterGO.transform.position + (Vector3.up * 1.75f);
+                explosionPos = casterMovementComp.gameObject.transform.position + (Vector3.up * 1.75f);
             }
             else
             {
                 explosionPos = targetMovementComp.gameObject.transform.position + (Vector3.up * 1.75f);
 
                 // Jackpot sound on enemy hit
-                Vector3 jackpotPos = casterGO.transform.position + (Vector3.up * 1.75f);
+                var jackpotPos = casterMovementComp.gameObject.transform.position + (Vector3.up * 1.75f);
                 Utils.PlaySpatialSoundAtPosition(jackpotPos, WagerSpell.JackpotSound);
             }
 
-            GameObject explosionGO = Instantiate(WagerSpell.ExplosionPrefab, explosionPos, Quaternion.identity);
-            float effectDuration = WagerSpell.ExplosionPrefab.GetComponent<ParticleSystem>().main.duration + 0.25f;
-            Destroy(explosionGO, effectDuration);
+            var explosion = Instantiate(WagerSpell.ExplosionPrefab, explosionPos, Quaternion.identity);
+            var effectDuration = WagerSpell.ExplosionPrefab.GetComponent<ParticleSystem>().main.duration;
+            Destroy(explosion, effectDuration);
             
             Utils.PlaySpatialSoundAtPosition(explosionPos, WagerSpell.ExplodeSound);
 
-            targetMovementComp.DamagePlayer(Damage, casterGO, "Wager");
+            targetMovementComp.DamagePlayer(Damage, casterMovementComp.gameObject, "Wager");
         }
         else
         {
-            WagerSpell.Logger.LogInfo($"{casterMovementComp.playername} wagered with score {rand}/{SelfHitChance} but found no valid targets!");
+            WagerSpell.Logger.LogInfo($"{casterMovementComp.playername} wagered but found no valid targets!");
         }
     }
 }
