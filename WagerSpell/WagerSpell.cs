@@ -52,66 +52,30 @@ public class WagerSpell : BaseUnityPlugin
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
-    void Update()
+    private void Update()
     {
         #if DEBUG
             if (Input.GetKeyDown(KeyCode.F4))
             {
-                SpawnPage();
+                List<GameObject> players =
+                    [..GameObject.FindGameObjectsWithTag("Player").Where(player => player.name.Contains("Player"))];
+                if (players.Count == 0)
+                {
+                    Logger.LogError("No players found.");
+                    return;
+                }
+
+                foreach (var player in players.Where(player =>
+                             player.GetComponent<NetworkObject>()?.HasAuthority == true))
+                {
+                    var spawnPos = player.transform.position + player.transform.forward;
+                    spawnPos.y += 1.5f;
+                    BlackMagicManager.SpawnSpell<WagerSpellLogic>(spawnPos);
+
+                    Logger.LogMessage($"[SERVER] Spawned page 'Wager' for player '{player.name}' at {spawnPos}");
+                }
             }
         #endif
-    }
-
-    /// <summary>
-    /// Spawns an instance of this spell's page
-    /// </summary>
-    private void SpawnPage()
-    {
-        if (!InstanceFinder.IsServerStarted)
-        {
-            Logger.LogError("This must be run on the server.");
-            return;
-        }
-
-        PageLootTable lootTable = FindFirstObjectByType<PageLootTable>();
-        if (lootTable == null || lootTable.Pages == null || lootTable.Pages.Length == 0)
-        {
-            Logger.LogError("PageLootTable is missing or empty.");
-            return;
-        }
-
-        GameObject prefab = lootTable.Pages
-                            .Where(page => page.name.Contains("PageWager"))
-                            .FirstOrDefault();
-        if (prefab == null)
-        {
-            Logger.LogError("Page could not be found.");
-            return;
-        }
-
-        if (prefab.GetComponent<NetworkObject>() == null)
-        {
-            Logger.LogError($"Prefab '{prefab.name}' is missing a NetworkObject component.");
-            return;
-        }
-
-        List<GameObject> players =
-            [.. GameObject.FindGameObjectsWithTag("Player").Where(player => player.name.Contains("Player")) ];
-        if (players.Count == 0)
-        {
-            Logger.LogError("No players found.");
-            return;
-        }
-
-        foreach (GameObject player in players)
-        {
-            Vector3 spawnPos = player.transform.position + Vector3.forward;
-            spawnPos.y += 1.5f;
-            GameObject instance = Instantiate(prefab, spawnPos, Quaternion.identity);
-            InstanceFinder.ServerManager.Spawn(instance);
-
-            Logger.LogMessage($"[SERVER] Spawned page '{prefab.name}' for player '{player.name}' at {spawnPos}");
-        }
     }
 
     /// <summary>
