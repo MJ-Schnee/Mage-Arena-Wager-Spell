@@ -1,7 +1,7 @@
 # Wager Spell
 *Take a chance, take a-take a chance-chance, take a chance, take a chance*
 
-A spell with a chance to hit yourself instead of your target.
+A one-shot spell with a chance to hit yourself instead of your target.
 High risk, high reward.
 Cast this spell and take a chance.
 
@@ -55,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**1.0.1**
+* Thunderstore build fix and update spell description
+
 **1.0.0**
 * Public release!
 

@@ -4,5 +4,5 @@ internal class PluginInfo
 {
     public const string PLUGIN_GUID = "com.YeahThatsMJ.WagerSpell";
     public const string PLUGIN_NAME = "Wager Spell";
-    public const string PLUGIN_VERSION = "1.0.0";
+    public const string PLUGIN_VERSION = "1.0.1";
 }

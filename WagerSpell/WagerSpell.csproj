@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>WagerSpell</AssemblyName>
-    <Product>Spell with a 50/50 chance to hit you instead of your target</Product>
-    <Version>1.0.0</Version>
+    <Product>One-shot spell with a 50/50 chance to hit you instead of your target</Product>
+    <Version>1.0.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <RestoreAdditionalProjectSources>
