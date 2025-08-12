@@ -1,4 +1,4 @@
-﻿# Wager Spell
+# Wager Spell
 *Take a chance, take a-take a chance-chance, take a chance, take a chance*
 
 A spell with a chance to hit yourself instead of your target.
