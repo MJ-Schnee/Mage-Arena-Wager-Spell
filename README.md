@@ -55,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**1.0.2**
+* Thunderstore folder structure fix
+
 **1.0.1**
 * Thunderstore build fix and update spell description
 

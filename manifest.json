@@ -1,6 +1,6 @@
 {
     "name": "WagerSpell",
-    "version_number": "1.0.1",
+    "version_number": "1.0.2",
     "website_url": "https://github.com/MJ-Schnee/Mage-Arena-Wager-Spell",
     "description": "A one-shot spell with a chance to hit yourself instead of your target.",
     "dependencies": [
