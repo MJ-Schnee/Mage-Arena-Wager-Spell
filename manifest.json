@@ -1,11 +1,11 @@
 {
     "name": "WagerSpell",
-    "version_number": "1.0.2",
+    "version_number": "1.1.0",
     "website_url": "https://github.com/MJ-Schnee/Mage-Arena-Wager-Spell",
     "description": "A one-shot spell with a chance to hit yourself instead of your target.",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100",
-        "D1GQ-BlackMagicAPI-2.4.0",
-        "hiccup-ModSync-1.0.6"
+        "D1GQ-BlackMagicAPI-2.6.3",
+        "hiccup-ModSync-1.1.0"
     ]
 }

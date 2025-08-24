@@ -55,6 +55,9 @@ The following settings can be adjusted:
 * Team chest spawning
 
 ## Changelog
+**1.1.0**
+* Update dependencies and fix silent silent fail without MageConfigurationAPI
+
 **1.0.2**
 * Thunderstore folder structure fix
 
